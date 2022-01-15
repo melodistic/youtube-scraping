@@ -1,5 +1,4 @@
 import json
-import sys
 import os
 from ytmusicapi import YTMusic
 yt = YTMusic()
