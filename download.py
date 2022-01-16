@@ -60,6 +60,10 @@ def main():
                         break
                 except:
                     print("[error] Failed to download " + track["title"])
+                    try:
+                        os.remove(os.path.join(path,track["title"]+".wav"))
+                    except OSError:
+                        pass  
                     continue
             os.remove(os.path.join("data",mood,playlist_id))
             if count == 100:
