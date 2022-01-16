@@ -1,8 +1,9 @@
-from __future__ import unicode_literals
-from yt_dlp import YoutubeDL
-import os 
 import json
+import os 
+import time
+from __future__ import unicode_literals
 from azure.storage.blob import BlobServiceClient
+from yt_dlp import YoutubeDL
 
 def download_video(video_id, path):
     ydl_opts = {
@@ -38,7 +39,10 @@ def main():
     with open("env.json") as f:
         env = json.load(f)
     connection_str = env["connection_string"]
+    print("[connect] Connecting to Azure Blob Storage")
     blob_service_client = BlobServiceClient.from_connection_string(connection_str)
+    time.sleep(10)
+    print("[connect] Successfully connected to Azure Blob Storage")
     for mood in moods:
         os.makedirs(os.path.join("song",mood), exist_ok=True)
         playlist = os.listdir(os.path.join("data",mood))
