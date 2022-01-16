@@ -32,6 +32,7 @@ def upload_file_to_storage(env,filepath,mood):
     with open(filepath, "rb") as data:
         blob_client.upload_blob(data)
     print("[upload] Successfully uploaded " + filename + " to Azure Blob Storage")
+    os.remove(filepath)
 
 def main():
     os.makedirs("song", exist_ok=True)
