@@ -22,9 +22,7 @@ def download_video(video_id, path):
     with YoutubeDL(ydl_opts) as ydl:
         ydl.download(['https://www.youtube.com/watch?v=' + video_id])
 
-def upload_file_to_storage(env,filepath,mood):
-    connection_str = env["connection_string"]
-    blob_service_client = BlobServiceClient.from_connection_string(connection_str)
+def upload_file_to_storage(blob_service_client,filepath,mood):
     container_name = "songwav"
     filename = os.path.basename(filepath)
     blob_client = blob_service_client.get_blob_client(container=container_name, blob=os.path.join(mood,filename))
@@ -39,6 +37,8 @@ def main():
     moods = os.listdir("data")
     with open("env.json") as f:
         env = json.load(f)
+    connection_str = env["connection_string"]
+    blob_service_client = BlobServiceClient.from_connection_string(connection_str)
     for mood in moods:
         os.makedirs(os.path.join("song",mood), exist_ok=True)
         playlist = os.listdir(os.path.join("data",mood))
@@ -49,7 +49,7 @@ def main():
             for track in tracks:
                 try:
                     download_video(track["id"],path)
-                    upload_file_to_storage(env,os.path.join(path,track["title"]+".wav"),mood)
+                    upload_file_to_storage(blob_service_client,os.path.join(path,track["title"]+".wav"),mood)
                 except:
                     print("[error] Failed to download " + track["title"])
                     continue
