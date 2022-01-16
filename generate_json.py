@@ -27,7 +27,7 @@ if __name__ == "__main__":
         if i["title"] in valid_moods:
             os.makedirs(os.path.join("data",i["title"]), exist_ok=True)
             playlist = get_playlist_by_param(i["params"])
-            for j in playlist[:10]:
+            for j in playlist[:20]:
                 tracks = get_tracks(j["playlistId"])
                 with open(os.path.join("data",i["title"],j["playlistId"] + ".json"),"w") as f:
                     json.dump(tracks,f)

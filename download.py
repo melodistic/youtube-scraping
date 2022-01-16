@@ -44,6 +44,7 @@ def main():
     time.sleep(10)
     print("[connect] Successfully connected to Azure Blob Storage")
     for mood in moods:
+        count = 0
         os.makedirs(os.path.join("song",mood), exist_ok=True)
         playlist = os.listdir(os.path.join("data",mood))
         for playlist_id in playlist:
@@ -54,10 +55,15 @@ def main():
                 try:
                     download_video(track["id"],path)
                     upload_file_to_storage(blob_service_client,os.path.join(path,track["title"]+".wav"),mood)
+                    count += 1
+                    if count == 100:
+                        break
                 except:
                     print("[error] Failed to download " + track["title"])
                     continue
             os.remove(os.path.join("data",mood,playlist_id))
+            if count == 100:
+                break
 
 if __name__ == "__main__":
     main()
