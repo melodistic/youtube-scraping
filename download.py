@@ -36,3 +36,4 @@ if __name__ == "__main__":
                     download_video(track["id"],path)
                 except:
                     continue
+            os.remove(os.path.join("data",mood,playlist_id))
