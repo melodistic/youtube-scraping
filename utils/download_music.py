@@ -1,8 +1,8 @@
 from __future__ import unicode_literals
-import youtube_dl
+from yt_dlp import YoutubeDL
 
 ydl_opts = {
-    'format': 'bestaudio/best',
+    'format': 'bestaudio',
     'postprocessors': [{
         'key': 'FFmpegExtractAudio',
         'preferredcodec': 'wav',
@@ -15,5 +15,5 @@ ydl_opts = {
     'keepvideo': False
 }
 
-with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+with YoutubeDL(ydl_opts) as ydl:
     ydl.download(['https://www.youtube.com/watch?v=SJO_ToTNqNI'])

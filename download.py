@@ -1,12 +1,12 @@
 from __future__ import unicode_literals
-import youtube_dl
+from yt_dlp import YoutubeDL
 import os 
 import json
 from azure.storage.blob import BlobServiceClient
 
 def download_video(video_id, path):
     ydl_opts = {
-        'format': 'bestaudio/best',
+        'format': 'bestaudio',
         'postprocessors': [{
             'key': 'FFmpegExtractAudio',
             'preferredcodec': 'wav',
@@ -19,7 +19,7 @@ def download_video(video_id, path):
         'keepvideo': False,
         'outtmpl': os.path.join(path,'%(title)s.%(ext)s')
     }
-    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+    with YoutubeDL(ydl_opts) as ydl:
         ydl.download(['https://www.youtube.com/watch?v=' + video_id])
 
 def upload_file_to_storage(env,filepath,mood):
