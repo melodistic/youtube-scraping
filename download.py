@@ -32,4 +32,7 @@ if __name__ == "__main__":
             with open(os.path.join("data",mood,playlist_id)) as f:
                 tracks = json.load(f)
             for track in tracks:
-                download_video(track["id"],path)
+                try:
+                    download_video(track["id"],path)
+                except:
+                    continue
