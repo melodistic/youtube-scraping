@@ -46,6 +46,7 @@ def main():
     time.sleep(10)
     print("[connect] Successfully connected to Azure Blob Storage")
     for mood in moods:
+        print("[process] Processing " + mood)
         count = 0
         os.makedirs(os.path.join("song",mood), exist_ok=True)
         playlist = os.listdir(os.path.join("data",mood))
@@ -57,9 +58,9 @@ def main():
                 try:
                     download_video(track["id"],path)
                     upload_file_to_storage(blob_service_client,os.path.join(path,track["title"]+".wav"),mood)
-                    data.append([track["id"], track["title"], os.join(path,track["title"]+".wav"), mood])
+                    data.append([track["id"], track["title"], os.path.join(path,track["title"]+".wav"), mood])
                     count += 1
-                    if count == 100:
+                    if count == 250:
                         break
                 except:
                     print("[error] Failed to download " + track["title"])
@@ -69,8 +70,9 @@ def main():
                         pass  
                     continue
             os.remove(os.path.join("data",mood,playlist_id))
-            if count == 100:
+            if count == 250:
                 break
+        print("[process] Successfully processed " + mood)
     df = pd.DataFrame(data, columns=["id","title","path","mood"])
     df.to_csv("song.csv", index=False)
 
