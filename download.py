@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 import json
 import os 
 import time
+import pandas as pd
 from azure.storage.blob import BlobServiceClient
 from yt_dlp import YoutubeDL
 
@@ -39,6 +40,7 @@ def main():
     with open("env.json") as f:
         env = json.load(f)
     connection_str = env["connection_string"]
+    data = []
     print("[connect] Connecting to Azure Blob Storage")
     blob_service_client = BlobServiceClient.from_connection_string(connection_str)
     time.sleep(10)
@@ -55,6 +57,7 @@ def main():
                 try:
                     download_video(track["id"],path)
                     upload_file_to_storage(blob_service_client,os.path.join(path,track["title"]+".wav"),mood)
+                    data.append([track["id"], track["title"], os.join(path,track["title"]+".wav"), mood])
                     count += 1
                     if count == 100:
                         break
@@ -68,6 +71,8 @@ def main():
             os.remove(os.path.join("data",mood,playlist_id))
             if count == 100:
                 break
+    df = pd.DataFrame(data, columns=["id","title","path","mood"])
+    df.to_csv("song.csv", index=False)
 
 if __name__ == "__main__":
     main()
