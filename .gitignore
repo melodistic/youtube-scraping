@@ -2,3 +2,4 @@ data
 song
 env.json
 .DS_Store
+*.zip
