@@ -20,6 +20,13 @@ def download_video(video_id, path):
     with YoutubeDL(ydl_opts) as ydl:
         ydl.download(['https://www.youtube.com/watch?v=' + video_id])
 def main():
+    os.makedirs('song', exist_ok=True)
+    os.makedirs('song/Anxious', exist_ok=True)
+    os.makedirs('song/Chill', exist_ok=True)
+    os.makedirs('song/Focus', exist_ok=True)
+    os.makedirs('song/Party', exist_ok=True)
+    os.makedirs('song/Romance', exist_ok=True)
+    os.makedirs('song/Sad', exist_ok=True)
     df = pd.read_csv("list.csv")
     for index, row in df.iterrows():
         download_video(row['id'], './song/'+row['mood'])
