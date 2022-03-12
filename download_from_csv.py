@@ -2,7 +2,7 @@ import pandas as pd
 from yt_dlp import YoutubeDL
 import os
 
-def download_video(video_id, path):
+def download_video(video_id, path,title):
     ydl_opts = {
         'format': 'bestaudio',
         'postprocessors': [{
@@ -15,7 +15,7 @@ def download_video(video_id, path):
         ],
         'prefer_ffmpeg': False,
         'keepvideo': False,
-        'outtmpl': os.path.join(path,'%(title)s.%(ext)s')
+        'outtmpl': os.path.join(path,str(title)+'.%(ext)s')
     }
     with YoutubeDL(ydl_opts) as ydl:
         ydl.download(['https://www.youtube.com/watch?v=' + video_id])
@@ -29,7 +29,7 @@ def main():
     os.makedirs('song/Sad', exist_ok=True)
     df = pd.read_csv("list.csv")
     for index, row in df.iterrows():
-        download_video(row['id'], './song/'+row['mood'])
+        download_video(row['id'], './song/'+row['mood'],row['title'])
     
 
 if __name__ == "__main__":
