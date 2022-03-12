@@ -8,6 +8,11 @@ response = requests.get(url)
 data = []
 for i in response.json()['records']:
     field = i['fields']
-    data.append([field['id'],field['title'],field['mood']])
+    data.append([field['id'].strip(),field['title'].strip(),field['mood'].strip()])
+while response.json().get('offset'):
+    response = requests.get(url + "&offset=" + response.json()['offset'])
+    for i in response.json()['records']:
+        field = i['fields']
+        data.append([field['id'].strip(),field['title'].strip(),field['mood'].strip()])
 df = pd.DataFrame(data,columns=["id","title","mood"])
 df.to_csv("list.csv",index=False)
