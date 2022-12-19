@@ -1,8 +1,8 @@
 import requests
 import pandas as pd
-base_id = "appdmQl5OgLBOX1IB"
-table_name = "tblVKLaFZ1nRz6TL9"
-API_KEY = "keyLAJQI8EI5uOf28"
+base_id = "BASE_IE"
+table_name = "TABLE_NAME"
+API_KEY = "API_KEY"
 url = "https://api.airtable.com/v0/" + base_id + "/" + table_name + "?api_key=" + API_KEY
 response = requests.get(url)
 data = []
